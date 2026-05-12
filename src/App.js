@@ -889,7 +889,7 @@ const ProfilePage = ({ profile, setProfile }) => {
         .upload(path, photoFile, { upsert: true, contentType: photoFile.type });
       if (!upErr) {
         const { data: urlData } = supabase.storage.from("profile-photos").getPublicUrl(path);
-        photo_url = urlData.publicUrl + "?t=" + Date.now();
+        photo_url = urlData.publicUrl;
       }
     }
 
