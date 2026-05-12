@@ -886,7 +886,11 @@ const ProfilePage = ({ profile, setProfile }) => {
       const path = `profile.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("profile-photos")
-        .upload(path, photoFile, { upsert: true, contentType: photoFile.type });
+        .upload(path, photoFile, { upsert: true, cacheControl: "0", contentType: photoFile.type });
+      if (upErr) {
+        console.error("Upload error:", upErr);
+        alert("写真のアップロードに失敗しました: " + upErr.message);
+      }
       if (!upErr) {
         const { data: urlData } = supabase.storage.from("profile-photos").getPublicUrl(path);
         photo_url = urlData.publicUrl;
@@ -904,6 +908,10 @@ const ProfilePage = ({ profile, setProfile }) => {
       result = data;
     }
 
+    // photo_urlをキャッシュ破壊付きURLに更新
+    if (result && result.photo_url) {
+      result = { ...result, photo_url: result.photo_url.split("?")[0] + "?t=" + Date.now() };
+    }
     if (result) setProfile(result);
     setOk(true);
     setTimeout(() => setOk(false), 2200);
