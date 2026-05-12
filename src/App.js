@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect, useCallback } from "react";
 import { supabase } from "./supabase";
 
 // ─── Brand palette ────────────────────────────────────────────────────────────
