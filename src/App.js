@@ -492,10 +492,10 @@ const FeedingPage = ({ feedSettings, setFeedSettings, weights, profile }) => {
     const payload = { stage_index: si, kcal_per_100g: Number(kcal), updated_at: new Date().toISOString() };
     if (feedSettings?.id) {
       const { data } = await supabase.from("feed_settings").update(payload).eq("id", feedSettings.id).select().single();
-      if (data) setFeedSettings(data);
+      if (data) setFeedSettings({ ...data });
     } else {
       const { data } = await supabase.from("feed_settings").insert(payload).select().single();
-      if (data) setFeedSettings(data);
+      if (data) setFeedSettings({ ...data });
     }
     setOk(true);
     setTimeout(() => setOk(false), 2200);
